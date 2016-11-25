@@ -1,6 +1,6 @@
 # Vue In Viewport Directive [![Build Status](https://travis-ci.org/BKWLD/vue-in-viewport-mixin.svg?branch=2.x)](https://travis-ci.org/BKWLD/vue-in-viewport-mixin)
 
-Vue 2 directive that sets CSS classes on it's host element based on the elements current posiiton in the viewport.  These classes are:
+Vue 2 directive that sets CSS classes on its host element based on the elements current position in the viewport.  These classes are:
 
 - `in-viewport` - Some part of the element is within the viewport
 - `fully-viewport` - The element is fully in viewport or is taller than the viewport and currently fills it
@@ -9,7 +9,6 @@ Vue 2 directive that sets CSS classes on it's host element based on the elements
 
 This package wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make registering event listeners light and to do the in viewport calculations.
 
-*Compatibility note*: Requires IE >= 10 because of use of `classList`
 
 ## Usage
 
@@ -36,6 +35,9 @@ This package wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to 
 	}
 	```
 
+*	*Compatibility note*: This package requires IE >= 10 because it uses `classList`.  [Polyfill classList](https://github.com/eligrey/classList.js) if you need to spport older browsers.
+
+
 ## Arguments
 
 #### Modifiers
@@ -53,6 +55,7 @@ This package wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to 
 	```html
 	<div v-in-viewport='{ top: 100, bottom: 50 }'></div>
 	```
+
 
 ## Contributing
 
