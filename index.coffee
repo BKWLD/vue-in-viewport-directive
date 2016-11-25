@@ -2,6 +2,7 @@
 scrollMonitor = require 'scrollmonitor'
 
 # A dictionary for storing data per-element
+counter = 0
 monitors = {}
 
 # Parse the value into offsets
@@ -14,10 +15,9 @@ offset = (value) ->
 isNumeric = (n) -> !isNaN(parseFloat(n)) && isFinite(n)
 
 # Update classes based on current scrollMonitor state
-update = (el) ->
+update = (el, monitor) ->
 
 	# Init vars
-	monitor = monitors[el]
 	add = [] # Classes to add
 	remove = [] # Classes to remove
 
@@ -37,14 +37,26 @@ update = (el) ->
 # Mixin definition
 module.exports =
 
-	# Instantiate scroll monitor
-	bind: (el, binding) ->
-		monitors[el] = scrollMonitor.create el, offset binding.value
-		update el
-		monitors[el].on 'stateChange', -> update el
+	# Create scrollMonitor after the element has been added to DOM
+	inserted: (el, binding) ->
+
+		# Create and generate a unique id that will be store in a data value on
+		# the element
+		monitor = scrollMonitor.create el, offset binding.value
+		id = 'i' + counter++
+		el.dataset.inViewport = id
+		monitors[id] = monitor
+
+		# Trigger an initial update and lisen for changes
+		update el, monitor
+		monitor.on 'stateChange', -> update el, monitor
 
 	# Remove scroll monitor
-	unbind: (el) -> monitors[el].destroy()
+	unbind: (el) ->
+		id = el.dataset.inViewport
+		monitor = monitors[id]
+		monitor.destroy()
+		delete monitors[id]		
 
 	###
 	# Public interface
