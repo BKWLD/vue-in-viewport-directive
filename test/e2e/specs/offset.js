@@ -13,16 +13,16 @@ module.exports = {
     .waitForElementVisible('#app', 1000)
 
 		// Intially fully vsible
-		.assert.cssClassPresent(first, 'visible')
-		.assert.cssClassPresent(first, 'fully')
-		.assert.cssClassNotPresent(first, 'above')
-		.assert.cssClassNotPresent(first, 'below')
+		.assert.cssClassPresent(first, 'in-viewport')
+		.assert.cssClassPresent(first, 'fully-in-viewport')
+		.assert.cssClassNotPresent(first, 'above-viewport')
+		.assert.cssClassNotPresent(first, 'below-viewport')
 
     // The second example should be visible because it has a top of 100
-    .assert.cssClassPresent(second, 'visible')
-    .assert.cssClassNotPresent(second, 'fully')
-		.assert.cssClassNotPresent(second, 'above')
-    .assert.cssClassPresent(second, 'below')
+    .assert.cssClassPresent(second, 'in-viewport')
+    .assert.cssClassNotPresent(second, 'fully-in-viewport')
+		.assert.cssClassNotPresent(second, 'above-viewport')
+    .assert.cssClassPresent(second, 'below-viewport')
 
 	}, 'after 100px first becomes partially visible': function (browser) { browser
 
@@ -30,19 +30,19 @@ module.exports = {
     .execute('scrollTo(0, 100)')
 
 		// First is stilly fully visible
-		.assert.cssClassPresent(first, 'visible')
-		.assert.cssClassPresent(first, 'fully')
-		.assert.cssClassNotPresent(first, 'above')
-		.assert.cssClassNotPresent(first, 'below')
+		.assert.cssClassPresent(first, 'in-viewport')
+		.assert.cssClassPresent(first, 'fully-in-viewport')
+		.assert.cssClassNotPresent(first, 'above-viewport')
+		.assert.cssClassNotPresent(first, 'below-viewport')
 
 		// Scroll 1 more pixel
     .execute('scrollTo(0, 101)')
 
 		// First is now partially visible
-		.assert.cssClassPresent(first, 'visible')
-		.assert.cssClassNotPresent(first, 'fully')
-		.assert.cssClassPresent(first, 'above')
-		.assert.cssClassNotPresent(first, 'below')
+		.assert.cssClassPresent(first, 'in-viewport')
+		.assert.cssClassNotPresent(first, 'fully-in-viewport')
+		.assert.cssClassPresent(first, 'above-viewport')
+		.assert.cssClassNotPresent(first, 'below-viewport')
 
 	}, 'when first has 100px left, it becomes invisible': function (browser) { browser
 
@@ -50,10 +50,10 @@ module.exports = {
 		.execute('scrollTo(0, window.innerHeight - 100 - 49)') // Include margin
 
 		// First is now hidden
-    .assert.cssClassNotPresent(first, 'visible')
-		.assert.cssClassNotPresent(first, 'fully')
-		.assert.cssClassPresent(first, 'above')
-		.assert.cssClassNotPresent(first, 'below')
+    .assert.cssClassNotPresent(first, 'in-viewport')
+		.assert.cssClassNotPresent(first, 'fully-in-viewport')
+		.assert.cssClassPresent(first, 'above-viewport')
+		.assert.cssClassNotPresent(first, 'below-viewport')
 
   }, 'when second is 100px from top, it becomes fully visible': function (browser) { browser
 
@@ -63,10 +63,10 @@ module.exports = {
 
 		// The second example should be fully visible.  It has above and below
 		// because the offsets mean that it's "bigger" than the the viewport.
-		.assert.cssClassPresent(second, 'visible')
-		.assert.cssClassPresent(second, 'fully')
-		.assert.cssClassPresent(second, 'above')
-		.assert.cssClassPresent(second, 'below')
+		.assert.cssClassPresent(second, 'in-viewport')
+		.assert.cssClassPresent(second, 'fully-in-viewport')
+		.assert.cssClassPresent(second, 'above-viewport')
+		.assert.cssClassPresent(second, 'below-viewport')
 
 	}, 'clearing the offsets resets to the "basic" state ': function (browser) { browser
 
@@ -75,16 +75,16 @@ module.exports = {
 		.execute('window.App.resetOffsets()')
 
 		/// The first example should be fully visible initialy
-		.assert.cssClassPresent(first, 'visible')
-		.assert.cssClassPresent(first, 'fully')
-		.assert.cssClassNotPresent(first, 'above')
-		.assert.cssClassNotPresent(first, 'below')
+		.assert.cssClassPresent(first, 'in-viewport')
+		.assert.cssClassPresent(first, 'fully-in-viewport')
+		.assert.cssClassNotPresent(first, 'above-viewport')
+		.assert.cssClassNotPresent(first, 'below-viewport')
 
     // The second example should be hidden
-    .assert.cssClassNotPresent(second, 'visible')
-    .assert.cssClassNotPresent(second, 'fully')
-		.assert.cssClassNotPresent(second, 'above')
-    .assert.cssClassPresent(second, 'below')
+    .assert.cssClassNotPresent(second, 'in-viewport')
+    .assert.cssClassNotPresent(second, 'fully-in-viewport')
+		.assert.cssClassNotPresent(second, 'above-viewport')
+    .assert.cssClassPresent(second, 'below-viewport')
 
 		// All tests done
 		.end();

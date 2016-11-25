@@ -13,16 +13,16 @@ module.exports = {
     .waitForElementVisible('#app', 1000)
 
 		// The first example should be visible initialy
-		.assert.cssClassPresent(first, 'visible')
-		.assert.cssClassPresent(first, 'fully')
-		.assert.cssClassNotPresent(first, 'above')
-		.assert.cssClassNotPresent(first, 'below')
+		.assert.cssClassPresent(first, 'in-viewport')
+		.assert.cssClassPresent(first, 'fully-in-viewport')
+		.assert.cssClassNotPresent(first, 'above-viewport')
+		.assert.cssClassNotPresent(first, 'below-viewport')
 
     // The second example should be hidden
-    .assert.cssClassNotPresent(second, 'visible')
-    .assert.cssClassNotPresent(second, 'fully')
-		.assert.cssClassNotPresent(second, 'above')
-    .assert.cssClassPresent(second, 'below')
+    .assert.cssClassNotPresent(second, 'in-viewport')
+    .assert.cssClassNotPresent(second, 'fully-in-viewport')
+		.assert.cssClassNotPresent(second, 'above-viewport')
+    .assert.cssClassPresent(second, 'below-viewport')
 
 	}, 'should no longer be fully visible after 1px of scroll': function (browser) { browser
 
@@ -30,16 +30,16 @@ module.exports = {
     .execute('scrollTo(0, 1)')
 
     // First is now partially visible
-    .assert.cssClassPresent(first, 'visible')
-		.assert.cssClassNotPresent(first, 'fully')
-		.assert.cssClassPresent(first, 'above')
-		.assert.cssClassNotPresent(first, 'below')
+    .assert.cssClassPresent(first, 'in-viewport')
+		.assert.cssClassNotPresent(first, 'fully-in-viewport')
+		.assert.cssClassPresent(first, 'above-viewport')
+		.assert.cssClassNotPresent(first, 'below-viewport')
 
     // And second one is partially visible
-		.assert.cssClassPresent(second, 'visible')
-    .assert.cssClassNotPresent(second, 'fully')
-		.assert.cssClassNotPresent(second, 'above')
-    .assert.cssClassPresent(second, 'below')
+		.assert.cssClassPresent(second, 'in-viewport')
+    .assert.cssClassNotPresent(second, 'fully-in-viewport')
+		.assert.cssClassNotPresent(second, 'above-viewport')
+    .assert.cssClassPresent(second, 'below-viewport')
 
 	}, 'should not update again if scrolling back to top': function (browser) { browser
 
@@ -47,16 +47,16 @@ module.exports = {
 		.execute('scrollTo(0, 0)')
 
 		// All of the settings from the previous step
-    .assert.cssClassPresent(first, 'visible')
-		.assert.cssClassNotPresent(first, 'fully')
-		.assert.cssClassPresent(first, 'above')
-		.assert.cssClassNotPresent(first, 'below')
+    .assert.cssClassPresent(first, 'in-viewport')
+		.assert.cssClassNotPresent(first, 'fully-in-viewport')
+		.assert.cssClassPresent(first, 'above-viewport')
+		.assert.cssClassNotPresent(first, 'below-viewport')
 
 		// All of the settings from the previous step
-		.assert.cssClassPresent(second, 'visible')
-    .assert.cssClassNotPresent(second, 'fully')
-		.assert.cssClassNotPresent(second, 'above')
-    .assert.cssClassPresent(second, 'below')
+		.assert.cssClassPresent(second, 'in-viewport')
+    .assert.cssClassNotPresent(second, 'fully-in-viewport')
+		.assert.cssClassNotPresent(second, 'above-viewport')
+    .assert.cssClassPresent(second, 'below-viewport')
 
 		// All tests done
 		.end();

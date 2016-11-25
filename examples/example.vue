@@ -33,23 +33,19 @@ body {
 	margin-bottom: 51px;
 }
 
-.example:not(.active) {
-	opacity: 0.3;
-}
-
-.example.visible {
+.example.in-viewport {
 	background: orange;
 }
 
-.example.fully {
+.example.fully-in-viewport {
 	background: green;
 }
 
-.example.above {
+.example.above-viewport {
 	border-top: 10vh dotted black;
 }
 
-.example.below {
+.example.below-viewport {
 	border-bottom: 10vh dotted black;
 }
 

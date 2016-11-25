@@ -1,9 +1,52 @@
 # Deps
 scrollMonitor = require 'scrollmonitor'
 
+# A dictionary for storing data per-element
+monitors = {}
+
+# Parse the value into offsets
+offset = (value) ->
+	if isNumeric value
+	then return { top: value, bottom: value }
+	else { top: value?.top || 0, bottom: value?.bottom || 0 }
+
+# Test if value is a number
+isNumeric = (n) -> !isNaN(parseFloat(n)) && isFinite(n)
+
+# Update classes based on current scrollMonitor state
+update = (el) ->
+
+	# Init vars
+	monitor = monitors[el]
+	add = [] # Classes to add
+	remove = [] # Classes to remove
+
+	# Util to DRY up population of add and remove arrays
+	toggle = (bool, klass) -> if bool then add.push klass else remove.push klass
+
+	# Determine which classes to add
+	toggle monitor.isInViewport, 'in-viewport'
+	toggle monitor.isFullyInViewport, 'fully-in-viewport'
+	toggle monitor.isAboveViewport, 'above-viewport'
+	toggle monitor.isBelowViewport, 'below-viewport'
+
+	# Apply clases to element
+	el.classList.add.apply el.classList, add if add.length
+	el.classList.remove.apply el.classList, remove if remove.length
+
 # Mixin definition
 module.exports =
 
+	# Instantiate scroll monitor
+	bind: (el, binding) ->
+		monitors[el] = scrollMonitor.create el, offset binding.value
+		update el
+		monitors[el].on 'stateChange', -> update el
+
+	# Remove scroll monitor
+	unbind: (el) -> monitors[el].destroy()
+
+	###
 	# Public interface
 	props:
 
@@ -50,8 +93,8 @@ module.exports =
 			bottom: @inViewportOffsetBottomComputed
 
 	# Lifecycle hooks
-	mounted: -> @inViewportInit()
-	destroyed: -> @inViewportDestroy()
+	bind: (el, binding) -> @inViewportInit()
+	unbind: (el, binding) -> @inViewportDestroy()
 
 	# Watch props and data
 	watch:
@@ -113,3 +156,5 @@ module.exports =
 			@inViewport.fully = @scrollMonitor.isFullyInViewport
 			@inViewport.above = @scrollMonitor.isAboveViewport
 			@inViewport.below = @scrollMonitor.isBelowViewport
+
+	###
