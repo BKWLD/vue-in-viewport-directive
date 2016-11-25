@@ -24,15 +24,15 @@ module.exports = {
 		.assert.cssClassNotPresent(second, 'above-viewport')
     .assert.cssClassPresent(second, 'below-viewport')
 
-	}, 'should no longer be fully visible after 1px of scroll': function (browser) { browser
+	}, 'first should not update after scroll, second should': function (browser) { browser
 
 		// Scroll 1px down
     .execute('scrollTo(0, 1)')
 
-    // First is now partially visible
+    // First should not change
     .assert.cssClassPresent(first, 'in-viewport')
-		.assert.cssClassNotPresent(first, 'fully-in-viewport')
-		.assert.cssClassPresent(first, 'above-viewport')
+		.assert.cssClassPresent(first, 'fully-in-viewport')
+		.assert.cssClassNotPresent(first, 'above-viewport')
 		.assert.cssClassNotPresent(first, 'below-viewport')
 
     // And second one is partially visible
@@ -41,15 +41,15 @@ module.exports = {
 		.assert.cssClassNotPresent(second, 'above-viewport')
     .assert.cssClassPresent(second, 'below-viewport')
 
-	}, 'should not update again if scrolling back to top': function (browser) { browser
+	}, 'neither should update after scrolling back to top': function (browser) { browser
 
 		// Scroll back to top
 		.execute('scrollTo(0, 0)')
 
 		// All of the settings from the previous step
-    .assert.cssClassPresent(first, 'in-viewport')
-		.assert.cssClassNotPresent(first, 'fully-in-viewport')
-		.assert.cssClassPresent(first, 'above-viewport')
+		.assert.cssClassPresent(first, 'in-viewport')
+		.assert.cssClassPresent(first, 'fully-in-viewport')
+		.assert.cssClassNotPresent(first, 'above-viewport')
 		.assert.cssClassNotPresent(first, 'below-viewport')
 
 		// All of the settings from the previous step
