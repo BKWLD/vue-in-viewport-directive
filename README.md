@@ -1,4 +1,4 @@
-# Vue In Viewport Directive [![Build Status](https://travis-ci.org/BKWLD/vue-in-viewport-mixin.svg?branch=2.x)](https://travis-ci.org/BKWLD/vue-in-viewport-mixin)
+# Vue In Viewport Directive [![Build Status](https://travis-ci.org/BKWLD/vue-in-viewport-directive.svg?branch=master)](https://travis-ci.org/BKWLD/vue-in-viewport-directive)
 
 Vue 2 directive that sets CSS classes on its host element based on the elements current position in the viewport.  These classes are:
 
