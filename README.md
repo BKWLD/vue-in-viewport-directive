@@ -21,9 +21,9 @@ This package wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to 
 
 * Use the classes to trigger CSS transitions (for instance):
 	```html
-	<div class='box' v-directive></div>
-	<div class='box' v-directive.once='100'></div>
-	<div class='box' v-directive.once='{ bottom: -100 }'></div>
+	<div class='box' v-in-viewport></div>
+	<div class='box' v-in-viewport.once='100'></div>
+	<div class='box' v-in-viewport.once='{ bottom: -100 }'></div>
 	```
 	```css
 	.box {
@@ -35,7 +35,7 @@ This package wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to 
 	}
 	```
 
-*	*Compatibility note*: This package requires IE >= 10 because it uses `classList`.  [Polyfill classList](https://github.com/eligrey/classList.js) if you need to spport older browsers.
+*	*Compatibility note*: This package requires IE >= 10 because it uses `classList`.  [Polyfill classList](https://github.com/eligrey/classList.js) if you need to support older browsers.
 
 
 ## Arguments
