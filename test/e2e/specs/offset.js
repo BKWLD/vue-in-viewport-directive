@@ -47,7 +47,7 @@ module.exports = {
 	}, 'when first has 100px left, it becomes invisible': function (browser) { browser
 
 		// Scroll past first example
-		.execute('scrollTo(0, window.innerHeight - 100 - 49)') // Include margin
+		.execute('scrollTo(0, window.innerHeight - 100 - 50)') // Include margin
 
 		// First is now hidden
     .assert.cssClassNotPresent(first, 'in-viewport')
@@ -57,9 +57,9 @@ module.exports = {
 
   }, 'when second is 100px from top, it becomes fully visible': function (browser) { browser
 
-		// Scroll back up to top.  Not sure why scrollMonitor required this
-		// fudging to 98 rather than 100...
-		.execute('scrollTo(0, window.innerHeight - 98)')
+    // Scroll to when the second is 100px from the top with an extra 1px needed
+		// to account since the second is 1px after the bottom of the first.
+		.execute('scrollTo(0, window.innerHeight - 100 + 1)')
 
 		// The second example should be fully visible.  It has above and below
 		// because the offsets mean that it's "bigger" than the the viewport.
@@ -70,7 +70,7 @@ module.exports = {
 
 	}, 'clearing the offsets resets to the "basic" state ': function (browser) { browser
 
-		// Scroll past first example
+		// Scroll back to top
 		.execute('scrollTo(0, 0)')
 		.execute('window.App.resetOffsets()')
 

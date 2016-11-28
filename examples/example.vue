@@ -25,12 +25,7 @@ body {
 	width: 100vw;
 	background: red;
 	box-sizing: border-box;
-
-	/**
-	 * This 20+1 on the margin was needed because otherwise the second one gets
-	 * marked by scroll monitor as initially visible.
-	 */
-	margin-bottom: 51px;
+	margin-bottom: 50px;
 }
 
 .example.in-viewport {
