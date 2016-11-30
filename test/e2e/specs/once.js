@@ -8,9 +8,9 @@ second = shared.second;
  */
 module.exports = {
 
-  'should have initial state': function (browser) { browser
-	  .url('http://localhost:8080/once/')
-    .waitForElementVisible('#app', 1000)
+	'should have initial state': function (browser) { browser
+		.url('http://localhost:8080/once/')
+		.waitForElementVisible('#app', 1000)
 
 		// The first example should be visible initialy
 		.assert.cssClassPresent(first, 'in-viewport')
@@ -18,28 +18,28 @@ module.exports = {
 		.assert.cssClassNotPresent(first, 'above-viewport')
 		.assert.cssClassNotPresent(first, 'below-viewport')
 
-    // The second example should be hidden
-    .assert.cssClassNotPresent(second, 'in-viewport')
-    .assert.cssClassNotPresent(second, 'fully-in-viewport')
+		// The second example should be hidden
+		.assert.cssClassNotPresent(second, 'in-viewport')
+		.assert.cssClassNotPresent(second, 'fully-in-viewport')
 		.assert.cssClassNotPresent(second, 'above-viewport')
-    .assert.cssClassPresent(second, 'below-viewport')
+		.assert.cssClassPresent(second, 'below-viewport')
 
 	}, 'first should not update after scroll, second should': function (browser) { browser
 
 		// Scroll 1px down
-    .execute('scrollTo(0, 1)')
+		.execute('scrollTo(0, 1)')
 
-    // First should not change
-    .assert.cssClassPresent(first, 'in-viewport')
+		// First should not change
+		.assert.cssClassPresent(first, 'in-viewport')
 		.assert.cssClassPresent(first, 'fully-in-viewport')
 		.assert.cssClassNotPresent(first, 'above-viewport')
 		.assert.cssClassNotPresent(first, 'below-viewport')
 
-    // And second one is partially visible
+		// And second one is partially visible
 		.assert.cssClassPresent(second, 'in-viewport')
-    .assert.cssClassNotPresent(second, 'fully-in-viewport')
+		.assert.cssClassNotPresent(second, 'fully-in-viewport')
 		.assert.cssClassNotPresent(second, 'above-viewport')
-    .assert.cssClassPresent(second, 'below-viewport')
+		.assert.cssClassPresent(second, 'below-viewport')
 
 	}, 'neither should update after scrolling back to top': function (browser) { browser
 
@@ -54,11 +54,11 @@ module.exports = {
 
 		// All of the settings from the previous step
 		.assert.cssClassPresent(second, 'in-viewport')
-    .assert.cssClassNotPresent(second, 'fully-in-viewport')
+		.assert.cssClassNotPresent(second, 'fully-in-viewport')
 		.assert.cssClassNotPresent(second, 'above-viewport')
-    .assert.cssClassPresent(second, 'below-viewport')
+		.assert.cssClassPresent(second, 'below-viewport')
 
 		// All tests done
 		.end();
-  },
+	},
 }

@@ -8,9 +8,9 @@ second = shared.second;
  */
 module.exports = {
 
-  'second starts off visible': function (browser) { browser
-	  .url('http://localhost:8080/offset/')
-    .waitForElementVisible('#app', 1000)
+	'second starts off visible': function (browser) { browser
+		.url('http://localhost:8080/offset/')
+		.waitForElementVisible('#app', 1000)
 
 		// Intially fully vsible
 		.assert.cssClassPresent(first, 'in-viewport')
@@ -18,16 +18,16 @@ module.exports = {
 		.assert.cssClassNotPresent(first, 'above-viewport')
 		.assert.cssClassNotPresent(first, 'below-viewport')
 
-    // The second example should be visible because it has a top of 100
-    .assert.cssClassPresent(second, 'in-viewport')
-    .assert.cssClassNotPresent(second, 'fully-in-viewport')
+		// The second example should be visible because it has a top of 100
+		.assert.cssClassPresent(second, 'in-viewport')
+		.assert.cssClassNotPresent(second, 'fully-in-viewport')
 		.assert.cssClassNotPresent(second, 'above-viewport')
-    .assert.cssClassPresent(second, 'below-viewport')
+		.assert.cssClassPresent(second, 'below-viewport')
 
 	}, 'after 100px first becomes partially visible': function (browser) { browser
 
 		// Scroll a page height down
-    .execute('scrollTo(0, 100)')
+		.execute('scrollTo(0, 100)')
 
 		// First is stilly fully visible
 		.assert.cssClassPresent(first, 'in-viewport')
@@ -36,7 +36,7 @@ module.exports = {
 		.assert.cssClassNotPresent(first, 'below-viewport')
 
 		// Scroll 1 more pixel
-    .execute('scrollTo(0, 101)')
+		.execute('scrollTo(0, 101)')
 
 		// First is now partially visible
 		.assert.cssClassPresent(first, 'in-viewport')
@@ -50,14 +50,14 @@ module.exports = {
 		.execute('scrollTo(0, window.innerHeight - 100 - 50)') // Include margin
 
 		// First is now hidden
-    .assert.cssClassNotPresent(first, 'in-viewport')
+		.assert.cssClassNotPresent(first, 'in-viewport')
 		.assert.cssClassNotPresent(first, 'fully-in-viewport')
 		.assert.cssClassPresent(first, 'above-viewport')
 		.assert.cssClassNotPresent(first, 'below-viewport')
 
-  }, 'when second is 100px from top, it becomes fully visible': function (browser) { browser
+	}, 'when second is 100px from top, it becomes fully visible': function (browser) { browser
 
-    // Scroll to when the second is 100px from the top with an extra 1px needed
+		// Scroll to when the second is 100px from the top with an extra 1px needed
 		// to account since the second is 1px after the bottom of the first.
 		.execute('scrollTo(0, window.innerHeight - 100 + 1)')
 
@@ -80,11 +80,11 @@ module.exports = {
 		.assert.cssClassNotPresent(first, 'above-viewport')
 		.assert.cssClassNotPresent(first, 'below-viewport')
 
-    // The second example should be hidden
-    .assert.cssClassNotPresent(second, 'in-viewport')
-    .assert.cssClassNotPresent(second, 'fully-in-viewport')
+		// The second example should be hidden
+		.assert.cssClassNotPresent(second, 'in-viewport')
+		.assert.cssClassNotPresent(second, 'fully-in-viewport')
 		.assert.cssClassNotPresent(second, 'above-viewport')
-    .assert.cssClassPresent(second, 'below-viewport')
+		.assert.cssClassPresent(second, 'below-viewport')
 
 		// All tests done
 		.end();
