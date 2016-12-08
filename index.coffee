@@ -25,7 +25,9 @@ addListeners = (el, binding) ->
 offset = (value) ->
 	if isNumeric value
 	then return { top: value, bottom: value }
-	else { top: value?.top || 0, bottom: value?.bottom || 0 }
+	else
+		top: value?.top || module.exports.defaults.top
+		bottom: value?.bottom || module.exports.defaults.bottom
 
 # Test if var is a number
 isNumeric = (n) -> !isNaN(parseFloat(n)) && isFinite(n)
@@ -66,6 +68,11 @@ removeListeners = (el) ->
 
 # Mixin definition
 module.exports =
+
+	# Define overrideable defaults
+	defaults:
+		top: 0
+		bottom: 0
 
 	# Init
 	inserted: (el, binding) -> addListeners el, binding

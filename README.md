@@ -35,6 +35,13 @@ This package wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to 
 	}
 	```
 
+* Set default offsets:
+```js
+import inViewportDirective from 'vue-in-viewport-directive'
+inViewportDirective.defaults.top = -200
+Vue.directive('in-viewport', inViewportDirective)
+```
+
 *	*Compatibility note*: This package requires IE >= 10 because it uses `classList`.  [Polyfill classList](https://github.com/eligrey/classList.js) if you need to support older browsers.
 
 
