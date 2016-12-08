@@ -82,8 +82,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	  } else {
 	    return {
-	      top: (value != null ? value.top : void 0) || 0,
-	      bottom: (value != null ? value.bottom : void 0) || 0
+	      top: (value != null ? value.top : void 0) || module.exports.defaults.top,
+	      bottom: (value != null ? value.bottom : void 0) || module.exports.defaults.bottom
 	    };
 	  }
 	};
@@ -131,6 +131,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	module.exports = {
+	  defaults: {
+	    top: 0,
+	    bottom: 0
+	  },
 	  inserted: function(el, binding) {
 	    return addListeners(el, binding);
 	  },
