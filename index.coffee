@@ -62,9 +62,9 @@ objIsSame = (obj1, obj2) -> JSON.stringify(obj1) == JSON.stringify(obj2)
 # Remove scrollMonitor listeners
 removeListeners = (el) ->
 	id = el.dataset.inViewport
-	monitor = monitors[id]
-	monitor.destroy()
-	delete monitors[id]
+	if monitor = monitors[id]
+		monitor.destroy()
+		delete monitors[id]
 
 # Mixin definition
 module.exports =
