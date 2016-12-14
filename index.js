@@ -125,9 +125,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	removeListeners = function(el) {
 	  var id, monitor;
 	  id = el.dataset.inViewport;
-	  monitor = monitors[id];
-	  monitor.destroy();
-	  return delete monitors[id];
+	  if (monitor = monitors[id]) {
+	    monitor.destroy();
+	    return delete monitors[id];
+	  }
 	};
 
 	module.exports = {
