@@ -66,7 +66,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var id, monitor;
 	  monitor = scrollMonitor.create(el, offset(binding.value));
 	  id = 'i' + counter++;
-	  el.setAttribute('data-in-viewport', id);
+	  el.dataset.inViewport = id;
 	  monitors[id] = monitor;
 	  monitor.on('stateChange', function() {
 	    return update(el, monitor, binding.modifiers);
@@ -124,7 +124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	removeListeners = function(el) {
 	  var id, monitor;
-	  id = el.getAttribute('data-in-viewport');
+	  id = el.dataset.inViewport;
 	  if (monitor = monitors[id]) {
 	    monitor.destroy();
 	    return delete monitors[id];
