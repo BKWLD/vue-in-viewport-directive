@@ -12,7 +12,7 @@ addListeners = (el, binding) ->
 	# the element
 	monitor = scrollMonitor.create el, offset binding.value
 	id = 'i' + counter++
-	el.dataset.inViewport = id
+	el.setAttribute 'data-in-viewport', id
 	monitors[id] = monitor
 
 	# Start listenting for changes
@@ -61,7 +61,7 @@ objIsSame = (obj1, obj2) -> JSON.stringify(obj1) == JSON.stringify(obj2)
 
 # Remove scrollMonitor listeners
 removeListeners = (el) ->
-	id = el.dataset.inViewport
+	id = el.getAttribute 'data-in-viewport'
 	if monitor = monitors[id]
 		monitor.destroy()
 		delete monitors[id]
