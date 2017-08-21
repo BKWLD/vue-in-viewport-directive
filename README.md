@@ -7,6 +7,9 @@ Vue 2 directive that sets CSS classes on its host element based on the elements 
 - `above-viewport` - Some part of the element is above the viewport
 - `below-viewport` - Some part of the element is below the viewport
 
+
+You may want to check out the mixin vesion of this package: [vue-in-viewport-mixin](https://github.com/BKWLD/vue-in-viewport-mixin).
+
 This package wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to make registering event listeners light and to do the in viewport calculations.
 
 
