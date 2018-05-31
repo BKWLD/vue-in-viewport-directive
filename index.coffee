@@ -78,7 +78,7 @@ module.exports =
 	inserted: (el, binding) -> addListeners el, binding
 
 	# If the value changed, re-init scrollbar since scrollMonitor doesn't provide
-	# an API to upadte the offsets.  Doing JSON.stringify to conpare as a quick
+	# an API to update the offsets.  Doing JSON.stringify to compare as a quick
 	# way to deep compare objects
 	componentUpdated: (el, binding) ->
 		return if objIsSame binding.value, binding.oldValue
