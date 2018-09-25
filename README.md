@@ -3,7 +3,7 @@
 Vue 2 directive that sets CSS classes on its host element based on the elements current position in the viewport.  These classes are:
 
 - `in-viewport` - Some part of the element is within the viewport
-- `fully-viewport` - The element is fully in viewport or is taller than the viewport and currently fills it
+- `fully-in-viewport` - The element is fully in viewport or is taller than the viewport and currently fills it
 - `above-viewport` - Some part of the element is above the viewport
 - `below-viewport` - Some part of the element is below the viewport
 
