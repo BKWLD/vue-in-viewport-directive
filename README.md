@@ -15,6 +15,8 @@ This package wraps [scrollMonitor](https://github.com/stutrek/scrollMonitor) to 
 
 ## Usage
 
+Note, this should not be applied to elements / components that are setting a dynamic class through Vue.  See https://github.com/BKWLD/vue-in-viewport-directive/issues/4.
+
 * Register the directive:
 	```js
 	import Vue from 'vue'
