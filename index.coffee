@@ -10,7 +10,7 @@ disabled = false
 export disable = -> disabled = true
 export enable = -> 
 	disabled = false
-	update monitor for id, monitor in monitors
+	update monitor for id, monitor of monitors
 
 # Create scrollMonitor after the element has been added to DOM
 addListeners = (el, binding) ->
