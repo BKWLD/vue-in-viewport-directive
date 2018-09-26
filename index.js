@@ -17,11 +17,11 @@ export var disable = function () {
 };
 
 export var enable = function () {
-  var i, id, len, monitor, results;
+  var id, monitor, results;
   disabled = false;
   results = [];
-  for (monitor = i = 0, len = monitors.length; i < len; monitor = ++i) {
-    id = monitors[monitor];
+  for (id in monitors) {
+    monitor = monitors[id];
     results.push(update(monitor));
   }
   return results;
