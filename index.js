@@ -9,30 +9,20 @@ counter = 0;
 
 monitors = {};
 
-// Store global disabled setting
+// Support toggling of disabled state
 disabled = false;
 
-// Allow global disabling of current and new listeners
 export var disable = function () {
-  var id, results, watcher;
-  disabled = true;
-  results = [];
-  for (id in monitors) {
-    watcher = monitors[id];
-    results.push(watcher.lock());
-  }
-  return results;
+  return disabled = true;
 };
 
-// Re-enabling updates
 export var enable = function () {
-  var id, results, watcher;
+  var i, id, len, monitor, results;
   disabled = false;
   results = [];
-  for (id in monitors) {
-    watcher = monitors[id];
-    watcher.unlock();
-    results.push(watcher.recalculateLocation());
+  for (monitor = i = 0, len = monitors.length; i < len; monitor = ++i) {
+    id = monitors[monitor];
+    results.push(update(monitor));
   }
   return results;
 };
@@ -42,17 +32,21 @@ addListeners = function (el, binding) {
   var id, monitor;
   // Create and generate a unique id that will be store in a data value on
   // the element
-  monitor = scrollMonitor.create(el, offset(binding.value));
+  monitor = {
+    el: el,
+    modifiers: binding.modifiers,
+    watcher: scrollMonitor.create(el, offset(binding.value))
+  };
   id = 'i' + counter++;
   el.setAttribute('data-in-viewport', id);
   monitors[id] = monitor;
   // Start listenting for changes
-  monitor.on('stateChange', function () {
-    return update(el, monitor, binding.modifiers);
+  monitor.watcher.on('stateChange', function () {
+    return update(monitor);
   });
   if (!disabled) {
     // Update intiial state, which also handles `once` prop
-    return update(el, monitor, binding.modifiers);
+    return update(monitor);
   }
 };
 
@@ -77,8 +71,11 @@ isNumeric = function (n) {
 };
 
 // Update element classes based on current scrollMonitor state
-update = function (el, monitor, modifiers) {
+update = function ({ el, watcher, modifiers }) {
   var add, remove, toggle;
+  if (disabled) {
+    return;
+  }
   // Init vars
   add = []; // Classes to add
   remove = []; // Classes to remove
@@ -92,10 +89,10 @@ update = function (el, monitor, modifiers) {
     }
   };
   // Determine which classes to add
-  toggle(monitor.isInViewport, 'in-viewport');
-  toggle(monitor.isFullyInViewport, 'fully-in-viewport');
-  toggle(monitor.isAboveViewport, 'above-viewport');
-  toggle(monitor.isBelowViewport, 'below-viewport');
+  toggle(watcher.isInViewport, 'in-viewport');
+  toggle(watcher.isFullyInViewport, 'fully-in-viewport');
+  toggle(watcher.isAboveViewport, 'above-viewport');
+  toggle(watcher.isBelowViewport, 'below-viewport');
   if (add.length) {
     // Apply classes to element
     el.classList.add.apply(el.classList, add);
@@ -103,7 +100,7 @@ update = function (el, monitor, modifiers) {
   if (remove.length) {
     el.classList.remove.apply(el.classList, remove);
   }
-  if (modifiers.once && monitor.isInViewport) {
+  if (modifiers.once && watcher.isInViewport) {
     // If set to update "once", remove listeners if in viewport
     return removeListeners(el);
   }
@@ -117,10 +114,12 @@ objIsSame = function (obj1, obj2) {
 
 // Remove scrollMonitor listeners
 removeListeners = function (el) {
-  var id, monitor;
+  var id, monitor, ref;
   id = el.getAttribute('data-in-viewport');
   if (monitor = monitors[id]) {
-    monitor.destroy();
+    if ((ref = monitor.watcher) != null) {
+      ref.destroy();
+    }
     return delete monitors[id];
   }
 };

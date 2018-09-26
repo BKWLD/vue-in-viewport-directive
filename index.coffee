@@ -5,36 +5,31 @@ import scrollMonitor from 'scrollmonitor'
 counter = 0
 monitors = {}
 
-# Store global disabled setting
+# Support toggling of disabled state
 disabled = false
-
-# Allow global disabling of current and new listeners
-export disable = ->
-	disabled = true
-	watcher.lock() for id, watcher of monitors
-
-# Re-enabling updates
-export enable = ->
+export disable = -> disabled = true
+export enable = -> 
 	disabled = false
-	for id, watcher of monitors
-		watcher.unlock()
-		watcher.recalculateLocation()
+	update monitor for id, monitor in monitors
 
 # Create scrollMonitor after the element has been added to DOM
 addListeners = (el, binding) ->
 
 	# Create and generate a unique id that will be store in a data value on
 	# the element
-	monitor = scrollMonitor.create el, offset binding.value
+	monitor = 
+		el: el
+		modifiers: binding.modifiers
+		watcher: scrollMonitor.create el, offset binding.value
 	id = 'i' + counter++
 	el.setAttribute 'data-in-viewport', id
 	monitors[id] = monitor
 
 	# Start listenting for changes
-	monitor.on 'stateChange', -> update el, monitor, binding.modifiers
+	monitor.watcher.on 'stateChange', -> update monitor
 
 	# Update intiial state, which also handles `once` prop
-	update el, monitor, binding.modifiers unless disabled
+	update monitor unless disabled
 
 # Parse the binding value into scrollMonitor offsets
 offset = (value) ->
@@ -48,7 +43,8 @@ offset = (value) ->
 isNumeric = (n) -> !isNaN(parseFloat(n)) && isFinite(n)
 
 # Update element classes based on current scrollMonitor state
-update = (el, monitor, modifiers) ->
+update = ({ el, watcher, modifiers }) ->
+	return if disabled
 
 	# Init vars
 	add = [] # Classes to add
@@ -58,17 +54,17 @@ update = (el, monitor, modifiers) ->
 	toggle = (bool, klass) -> if bool then add.push klass else remove.push klass
 
 	# Determine which classes to add
-	toggle monitor.isInViewport, 'in-viewport'
-	toggle monitor.isFullyInViewport, 'fully-in-viewport'
-	toggle monitor.isAboveViewport, 'above-viewport'
-	toggle monitor.isBelowViewport, 'below-viewport'
+	toggle watcher.isInViewport, 'in-viewport'
+	toggle watcher.isFullyInViewport, 'fully-in-viewport'
+	toggle watcher.isAboveViewport, 'above-viewport'
+	toggle watcher.isBelowViewport, 'below-viewport'
 
 	# Apply classes to element
 	el.classList.add.apply el.classList, add if add.length
 	el.classList.remove.apply el.classList, remove if remove.length
 
 	# If set to update "once", remove listeners if in viewport
-	removeListeners el if modifiers.once and monitor.isInViewport
+	removeListeners el if modifiers.once and watcher.isInViewport
 
 # Compare two objects.  Doing JSON.stringify to conpare as a quick way to
 # deep compare objects
@@ -78,7 +74,7 @@ objIsSame = (obj1, obj2) -> JSON.stringify(obj1) == JSON.stringify(obj2)
 removeListeners = (el) ->
 	id = el.getAttribute 'data-in-viewport'
 	if monitor = monitors[id]
-		monitor.destroy()
+		monitor.watcher?.destroy()
 		delete monitors[id]
 
 # Mixin definition
