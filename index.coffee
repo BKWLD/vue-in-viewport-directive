@@ -5,6 +5,21 @@ import scrollMonitor from 'scrollmonitor'
 counter = 0
 monitors = {}
 
+# Store global disabled setting
+disabled = false
+
+# Allow global disabling of current and new listeners
+export disable = ->
+	disabled = true
+	watcher.lock() for id, watcher of monitors
+
+# Re-enabling updates
+export enable = ->
+	disabled = false
+	for id, watcher of monitors
+		watcher.unlock()
+		watcher.recalculateLocation()
+
 # Create scrollMonitor after the element has been added to DOM
 addListeners = (el, binding) ->
 
@@ -19,7 +34,7 @@ addListeners = (el, binding) ->
 	monitor.on 'stateChange', -> update el, monitor, binding.modifiers
 
 	# Update intiial state, which also handles `once` prop
-	update el, monitor, binding.modifiers
+	update el, monitor, binding.modifiers unless disabled
 
 # Parse the binding value into scrollMonitor offsets
 offset = (value) ->
