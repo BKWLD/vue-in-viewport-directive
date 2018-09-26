@@ -100,8 +100,8 @@ update = function ({ el, watcher, modifiers }) {
   if (remove.length) {
     el.classList.remove.apply(el.classList, remove);
   }
-  if (modifiers.once && watcher.isInViewport) {
-    // If set to update "once", remove listeners if in viewport
+  // If set to update "once", remove listeners if in viewport
+  if (modifiers.once && !modifiers.fully && watcher.isInViewport || modifiers.once && modifiers.fully && watcher.isFullyInViewport) {
     return removeListeners(el);
   }
 };

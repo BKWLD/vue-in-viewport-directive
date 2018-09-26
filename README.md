@@ -66,7 +66,9 @@ only once the page transition finishes.
 
 #### Modifiers
 
-- `once` - Whether to remove listeners once the component enters viewport.  If the component is in viewport when mounted, listeners are never added.
+- `once` - Whether to remove listeners once the element enters viewport.  If the element is in viewport when mounted, listeners are never added.
+
+- `fully` - Used in conjunction with `once`, removes the listeners once the element is *fully* in the viewport.
 
 #### Value
 

@@ -64,7 +64,9 @@ update = ({ el, watcher, modifiers }) ->
 	el.classList.remove.apply el.classList, remove if remove.length
 
 	# If set to update "once", remove listeners if in viewport
-	removeListeners el if modifiers.once and watcher.isInViewport
+	if (modifiers.once and not modifiers.fully and watcher.isInViewport) or
+	(modifiers.once and modifiers.fully and watcher.isFullyInViewport)
+		removeListeners el
 
 # Compare two objects.  Doing JSON.stringify to conpare as a quick way to
 # deep compare objects
