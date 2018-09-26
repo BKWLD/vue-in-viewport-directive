@@ -49,6 +49,18 @@ Vue.directive('in-viewport', inViewportDirective)
 
 *	*Compatibility note*: This package requires IE >= 10 because it uses `classList`.  [Polyfill classList](https://github.com/eligrey/classList.js) if you need to support older browsers.
 
+#### Global methods
+
+You can disable all updates and re-enable them globally:
+
+```js
+import { enable, disable } from 'vue-in-viewport-directive'
+disable()
+setTimeout(enable, 500)
+```
+
+This can be used during full page transitions to trigger all the in viewport transitions
+only once the page transition finishes.
 
 ## Arguments
 
