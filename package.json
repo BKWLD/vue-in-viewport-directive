@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "yarn test:e2e",
-    "build": "node_modules/.bin/webpack && node_modules/.bin/webpack -p",
+    "build": "coffee -ct index.coffee",
     "version": "npm run build && git add -A",
     "postversion": "git push --follow-tags",
     "test:e2e": "node test/e2e/runner.js"
@@ -24,19 +24,21 @@
     "vue": "2.x"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "chromedriver": "^2.25.1",
-    "coffee-loader": "^0.7.2",
-    "coffee-script": "^1.11.1",
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^2.2.4",
     "cross-spawn": "^5.0.1",
-    "css-loader": "^0.26.0",
+    "css-loader": "^1.0.0",
     "express": "^4.14.0",
     "express-urlrewrite": "^1.2.0",
     "nightwatch": "^0.9.9",
     "selenium-server": "^2.53.1",
-    "vue": "^2.1.0",
-    "vue-loader": "^10.0.0",
-    "vue-template-compiler": "^2.1.0",
-    "webpack": "^1.13.3",
-    "webpack-dev-middleware": "^1.8.4"
+    "vue": "^2.5.17",
+    "vue-loader": "^15.4.2",
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.20.2",
+    "webpack-dev-middleware": "^3.4.0"
   }
 }

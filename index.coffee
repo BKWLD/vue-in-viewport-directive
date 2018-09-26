@@ -1,5 +1,5 @@
 # Deps
-scrollMonitor = require 'scrollmonitor'
+import scrollMonitor from 'scrollmonitor'
 
 # A dictionary for storing data per-element
 counter = 0
@@ -26,8 +26,8 @@ offset = (value) ->
 	if isNumeric value
 	then return { top: value, bottom: value }
 	else
-		top: value?.top || module.exports.defaults.top
-		bottom: value?.bottom || module.exports.defaults.bottom
+		top: value?.top || directive.defaults.top
+		bottom: value?.bottom || directive.defaults.bottom
 
 # Test if var is a number
 isNumeric = (n) -> !isNaN(parseFloat(n)) && isFinite(n)
@@ -67,7 +67,7 @@ removeListeners = (el) ->
 		delete monitors[id]
 
 # Mixin definition
-module.exports =
+export default directive =
 
 	# Define overrideable defaults
 	defaults:

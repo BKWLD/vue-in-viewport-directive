@@ -3,10 +3,12 @@
 Vue = require 'vue'
 
 # Register the directive
-Vue.directive 'in-viewport', require 'vue-in-viewport-directive'
+import inViewport from 'vue-in-viewport-directive'
+Vue.directive 'in-viewport', inViewport
 
 # Component that will host the directive
-Vue.component 'example', require './example.vue'
+import example from './example.vue'
+Vue.component 'example', example
 
 # Init root instance
 window.App = new Vue

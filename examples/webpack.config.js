@@ -1,10 +1,11 @@
 const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
 
-  devtool: 'inline-source-map',
+  mode: 'development',
 
   entry: {
     app: path.join(__dirname, 'app.coffee'),
@@ -17,15 +18,37 @@ module.exports = {
   },
 
   module: {
-    loaders: [
-      { test: /\.vue$/, loader: 'vue' },
-      { test: /\.coffee$/, loader: 'coffee-loader' }
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      { 
+        test: /\.coffee$/, 
+        loader: 'coffee-loader',
+        options: {
+          transpile: {
+            presets: ['env']
+          }
+        }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          'css-loader'
+        ]
+      }
     ]
   },
+  
+  plugins: [
+    new VueLoaderPlugin()
+  ],
 
   resolve: {
     alias: {
-      'vue': 'vue/dist/vue.common.js',
+      'vue$': 'vue/dist/vue.js',
       'vue-in-viewport-directive': path.join(__dirname, '..', 'index.coffee')
     }
   },
