@@ -81,6 +81,11 @@ only once the page transition finishes.
 	```html
 	<div v-in-viewport='{ top: 100, bottom: 50 }'></div>
 	```
+	
+- Conditionally disable with `disabled`:
+	```html
+		<div v-in-viewport='{ disabled: true }'></div>
+	```
 
 
 ## Contributing

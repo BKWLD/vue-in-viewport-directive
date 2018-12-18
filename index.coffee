@@ -5,7 +5,7 @@ import scrollMonitor from 'scrollmonitor'
 counter = 0
 monitors = {}
 
-# Support toggling of disabled state
+# Support toggling of global disabled state
 disabled = false
 export disable = -> disabled = true
 export enable = -> 
@@ -14,6 +14,12 @@ export enable = ->
 
 # Create scrollMonitor after the element has been added to DOM
 addListeners = (el, binding) ->
+	
+	# If an indvidual instance is disabled, just add the in viewport classes so
+	# to reveal the element
+	if binding?.value?.disabled
+		el.classList.add.apply el.classList, [ 'in-viewport', 'fully-in-viewport' ]
+		return
 
 	# Create and generate a unique id that will be store in a data value on
 	# the element
@@ -86,6 +92,7 @@ export default directive =
 	defaults:
 		top: 0
 		bottom: 0
+		disabled: false
 
 	# Init
 	inserted: (el, binding) -> addListeners el, binding

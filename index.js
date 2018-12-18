@@ -20,7 +20,7 @@ counter = 0;
 
 monitors = {};
 
-// Support toggling of disabled state
+// Support toggling of global disabled state
 disabled = false;
 
 var disable = exports.disable = function disable() {
@@ -40,7 +40,14 @@ var enable = exports.enable = function enable() {
 
 // Create scrollMonitor after the element has been added to DOM
 addListeners = function addListeners(el, binding) {
-  var id, monitor;
+  var id, monitor, ref;
+
+  // If an indvidual instance is disabled, just add the in viewport classes so
+  // to reveal the element
+  if (binding != null ? (ref = binding.value) != null ? ref.disabled : void 0 : void 0) {
+    el.classList.add.apply(el.classList, ['in-viewport', 'fully-in-viewport']);
+    return;
+  }
   // Create and generate a unique id that will be store in a data value on
   // the element
   monitor = {
@@ -144,7 +151,8 @@ exports.default = directive = {
   // Define overrideable defaults
   defaults: {
     top: 0,
-    bottom: 0
+    bottom: 0,
+    disabled: false
   },
   // Init
   inserted: function inserted(el, binding) {
