@@ -7,38 +7,36 @@
   "author": "Bukwild",
   "license": "MIT",
   "scripts": {
-    "test": "yarn test:e2e",
+    "test": "cypress run",
     "build": "coffee -ct index.coffee",
     "version": "npm run build && git add -A",
-    "postversion": "git push --follow-tags",
-    "test:e2e": "node test/e2e/runner.js"
+    "postversion": "git push --follow-tags && yarn storybook:deploy",
+    "storybook": "start-storybook -p 6006",
+    "storybook:build": "build-storybook",
+    "storybook:deploy": "storybook-to-ghpages"
   },
   "bugs": {
     "url": "https://github.com/BKWLD/vue-in-viewport-directive/issues"
   },
   "homepage": "https://github.com/BKWLD/vue-in-viewport-directive#readme",
-  "dependencies": {
-    "scrollmonitor": "^1.1.3"
-  },
   "peerDependencies": {
     "vue": "2.x"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "chromedriver": "^2.25.1",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@storybook/addon-knobs": "^5.0.6",
+    "@storybook/addons": "^5.0.6",
+    "@storybook/storybook-deployer": "^2.8.1",
+    "@storybook/vue": "^5.0.6",
+    "babel-loader": "^8.0.5",
+    "babel-preset-vue": "^2.0.2",
     "coffee-loader": "^0.9.0",
-    "coffeescript": "^2.2.4",
-    "cross-spawn": "^5.0.1",
-    "css-loader": "^1.0.0",
-    "express": "^4.14.0",
-    "express-urlrewrite": "^1.2.0",
-    "nightwatch": "^0.9.9",
-    "selenium-server": "^2.53.1",
-    "vue": "^2.5.17",
-    "vue-loader": "^15.4.2",
-    "vue-template-compiler": "^2.5.17",
-    "webpack": "^4.20.2",
-    "webpack-dev-middleware": "^3.4.0"
+    "coffeescript": "^2.4.1",
+    "cypress": "^3.2.0",
+    "intersection-observer": "^0.5.1",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10"
   }
 }

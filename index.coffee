@@ -1,56 +1,67 @@
-# Deps
-import scrollMonitor from 'scrollmonitor'
-
 # A dictionary for storing data per-element
 counter = 0
-monitors = {}
+instances = {}
 
 # Support toggling of global disabled state
 disabled = false
 export disable = -> disabled = true
 export enable = -> 
 	disabled = false
-	update monitor for id, monitor of monitors
+	update instance for id, instance of instances
 
-# Create scrollMonitor after the element has been added to DOM
-addListeners = (el, binding) ->
+# Create instance after the element has been added to DOM
+startObserving = (el, binding) ->
 	
-	# If an indvidual instance is disabled, just add the in viewport classes so
+	# If an indvidual instance is disabled, just add the in viewport classes
 	# to reveal the element
-	if binding?.value?.disabled
-		el.classList.add.apply el.classList, [ 'in-viewport', 'fully-in-viewport' ]
+	if binding?.value?.disabled || directive.defaults.disabled || disabled
+		el.classList.add.apply el.classList, [ 'in-viewport' ]
 		return
 
-	# Create and generate a unique id that will be store in a data value on
-	# the element
-	monitor = 
+	# Create the instance object 
+	instance = 
 		el: el
-		modifiers: binding.modifiers
-		watcher: scrollMonitor.create el, offset binding.value
+		observer: makeObserver el, binding
+	
+	# Generate a unique id that will be store in a data value on the element
 	id = 'i' + counter++
 	el.setAttribute 'data-in-viewport', id
-	monitors[id] = monitor
+	instances[id] = instance
 
-	# Start listenting for changes
-	monitor.watcher.on 'stateChange', -> update monitor
+# Make the instance
+makeObserver = (el, { value = {}, modifiers }) ->
+	
+	# Make make default root
+	root = value.root || directive.defaults.root
+	root = switch typeof root
+		when 'function' then root()
+		when 'string' then document.querySelector root
+		when 'object' then root # Expects to be a DOMElement
+	
+	# Maek default margin
+	margin = if typeof value == 'string' then value
+	else value.margin || directive.defaults.margin
+	
+	# Make the observer callback
+	callback = ([entry]) -> update { el, entry, modifiers }
+		
+	# Make the observer instance
+	console.log margin
+	observer = new IntersectionObserver callback,
+		root: root
+		rootMargin: margin
+		threshold: [0,1]
+		
+	# Start observing the element and return the observer
+	observer.observe el
+	return observer
 
-	# Update intiial state, which also handles `once` prop
-	update monitor unless disabled
-
-# Parse the binding value into scrollMonitor offsets
-offset = (value) ->
-	if isNumeric value
-	then return { top: value, bottom: value }
-	else
-		top: value?.top || directive.defaults.top
-		bottom: value?.bottom || directive.defaults.bottom
-
-# Test if var is a number
-isNumeric = (n) -> !isNaN(parseFloat(n)) && isFinite(n)
-
-# Update element classes based on current scrollMonitor state
-update = ({ el, watcher, modifiers }) ->
-	return if disabled
+# Update element classes based on current intersection state
+update = ({ el, entry, modifiers }) ->
+	
+	# Destructure the entry to just what's needed
+	{ boundingClientRect: target, rootBounds: root } = entry
+	console.log target, root
 
 	# Init vars
 	add = [] # Classes to add
@@ -59,50 +70,52 @@ update = ({ el, watcher, modifiers }) ->
 	# Util to DRY up population of add and remove arrays
 	toggle = (bool, klass) -> if bool then add.push klass else remove.push klass
 
+	# Determine viewport status, see vue-in-viewport-mixin for more info:
+	# https://github.com/BKWLD/vue-in-viewport-mixin/blob/master/index.coffee
+	inViewport = target.top <= root.bottom and target.bottom > root.top
+	above = target.top < root.top
+	below = target.bottom > root.bottom + 1
+
 	# Determine which classes to add
-	toggle watcher.isInViewport, 'in-viewport'
-	toggle watcher.isFullyInViewport, 'fully-in-viewport'
-	toggle watcher.isAboveViewport, 'above-viewport'
-	toggle watcher.isBelowViewport, 'below-viewport'
+	toggle inViewport, 'in-viewport'
+	toggle above, 'above-viewport'
+	toggle below, 'below-viewport'
 
 	# Apply classes to element
 	el.classList.add.apply el.classList, add if add.length
 	el.classList.remove.apply el.classList, remove if remove.length
 
 	# If set to update "once", remove listeners if in viewport
-	if (modifiers.once and not modifiers.fully and watcher.isInViewport) or
-	(modifiers.once and modifiers.fully and watcher.isFullyInViewport)
-		removeListeners el
+	removeObserver el if modifiers.once and inViewport
 
 # Compare two objects.  Doing JSON.stringify to conpare as a quick way to
 # deep compare objects
 objIsSame = (obj1, obj2) -> JSON.stringify(obj1) == JSON.stringify(obj2)
 
 # Remove scrollMonitor listeners
-removeListeners = (el) ->
+removeObserver = (el) ->
 	id = el.getAttribute 'data-in-viewport'
-	if monitor = monitors[id]
-		monitor.watcher?.destroy()
-		delete monitors[id]
+	if instance = instances[id]
+		instance.observer?.disconnect()
+		delete instances[id]
 
 # Mixin definition
 export default directive =
 
 	# Define overrideable defaults
 	defaults:
-		top: 0
-		bottom: 0
+		root: undefined
+		margin: '0px 0px -1px 0px'
 		disabled: false
 
 	# Init
-	inserted: (el, binding) -> addListeners el, binding
+	inserted: (el, binding) -> startObserving el, binding
 
-	# If the value changed, re-init scrollbar since scrollMonitor doesn't provide
-	# an API to update the offsets.
+	# If the value changed, re-init observer
 	componentUpdated: (el, binding) ->
 		return if objIsSame binding.value, binding.oldValue
-		removeListeners el
-		addListeners el, binding
+		removeObserver el
+		startObserving el, binding
 
 	# Cleanup
-	unbind: (el) -> removeListeners el
+	unbind: (el) -> removeObserver el

@@ -84,7 +84,7 @@ only once the page transition finishes.
 	
 - Conditionally disable with `disabled`:
 	```html
-		<div v-in-viewport='{ disabled: true }'></div>
+	<div v-in-viewport='{ disabled: true }'></div>
 	```
 
 

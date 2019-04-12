@@ -1,0 +1,20 @@
+.box {
+	box-sizing: border-box;
+	width: 300px;
+	height: 200px;
+	background: linear-gradient(#39d6d4, #1ca7fd);
+	border: 10px solid transparent;
+	transition: border 1s;
+}
+
+.box.in-viewport {
+	border: 10px solid #94d6ff;
+}
+
+.box.above-viewport {
+	border-bottom-color: #f3cb5b;
+}
+
+.box.below-viewport {
+	border-top-color: #f3cb5b;
+}
