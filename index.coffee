@@ -19,9 +19,7 @@ startObserving = (el, binding) ->
 		return
 
 	# Create the instance object 
-	instance = 
-		el: el
-		observer: makeObserver el, binding
+	instance = observer: makeObserver el, binding
 	
 	# Generate a unique id that will be store in a data value on the element
 	id = 'i' + counter++
@@ -31,14 +29,14 @@ startObserving = (el, binding) ->
 # Make the instance
 makeObserver = (el, { value = {}, modifiers }) ->
 	
-	# Make make default root
+	# Make the default root
 	root = value.root || directive.defaults.root
 	root = switch typeof root
 		when 'function' then root()
 		when 'string' then document.querySelector root
 		when 'object' then root # Expects to be a DOMElement
 	
-	# Maek default margin
+	# Make the default margin
 	margin = if typeof value == 'string' then value
 	else value.margin || directive.defaults.margin
 	
@@ -46,7 +44,6 @@ makeObserver = (el, { value = {}, modifiers }) ->
 	callback = ([entry]) -> update { el, entry, modifiers }
 		
 	# Make the observer instance
-	console.log margin
 	observer = new IntersectionObserver callback,
 		root: root
 		rootMargin: margin
@@ -61,7 +58,6 @@ update = ({ el, entry, modifiers }) ->
 	
 	# Destructure the entry to just what's needed
 	{ boundingClientRect: target, rootBounds: root } = entry
-	console.log target, root
 
 	# Init vars
 	add = [] # Classes to add
