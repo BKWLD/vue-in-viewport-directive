@@ -1,6 +1,6 @@
 {
   "name": "vue-in-viewport-directive",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Vue 2 directive that adds css classes when the element is the viewport",
   "main": "index.js",
   "repository": "https://github.com/BKWLD/vue-in-viewport-directive.git",
