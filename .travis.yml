@@ -9,4 +9,4 @@ cache:
     - ~/.cache
 
 env:
-  CYPRESS_baseUrl: https://bkwld.github.io/vue-in-viewport-mixin/
+  CYPRESS_baseUrl: https://bkwld.github.io/vue-in-viewport-directive/
