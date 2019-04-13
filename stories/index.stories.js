@@ -94,7 +94,7 @@ storiesOf('Examples', module)
     template: initiallyHiddenBox,
   }))
   
-  .add('Trigger late (%, shorthand)', () => ({
+  .add('Trigger late (%)', () => ({
     components: { box: Shorthand },
     props: props({ margin: '-20% 0%' }),
     template: initiallyHiddenBox,
