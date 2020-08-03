@@ -41,7 +41,7 @@ makeObserver = (el, { value = {}, modifiers }) ->
 	else value.margin || directive.defaults.margin
 
 	# Make the observer callback
-	callback = ([entry]) -> update { el, entry, modifiers }
+	callback = ([..., entry]) -> update { el, entry, modifiers }
 
 	# Make the observer instance
 	observer = new IntersectionObserver callback,
