@@ -5,22 +5,22 @@ instances = {}
 # Support toggling of global disabled state
 disabled = false
 export disable = -> disabled = true
-export enable = -> 
+export enable = ->
 	disabled = false
 	update instance for id, instance of instances
 
 # Create instance after the element has been added to DOM
 startObserving = (el, binding) ->
-	
+
 	# If an indvidual instance is disabled, just add the in viewport classes
 	# to reveal the element
 	if binding?.value?.disabled || directive.defaults.disabled || disabled
 		el.classList.add.apply el.classList, [ 'in-viewport' ]
 		return
 
-	# Create the instance object 
+	# Create the instance object
 	instance = observer: makeObserver el, binding
-	
+
 	# Generate a unique id that will be store in a data value on the element
 	id = 'i' + counter++
 	el.setAttribute 'data-in-viewport', id
@@ -28,34 +28,34 @@ startObserving = (el, binding) ->
 
 # Make the instance
 makeObserver = (el, { value = {}, modifiers }) ->
-	
+
 	# Make the default root
 	root = value.root || directive.defaults.root
 	root = switch typeof root
 		when 'function' then root()
 		when 'string' then document.querySelector root
 		when 'object' then root # Expects to be a DOMElement
-	
+
 	# Make the default margin
 	margin = if typeof value == 'string' then value
 	else value.margin || directive.defaults.margin
-	
+
 	# Make the observer callback
 	callback = ([entry]) -> update { el, entry, modifiers }
-		
+
 	# Make the observer instance
 	observer = new IntersectionObserver callback,
 		root: root
 		rootMargin: margin
 		threshold: [0,1]
-		
+
 	# Start observing the element and return the observer
 	observer.observe el
 	return observer
 
 # Update element classes based on current intersection state
 update = ({ el, entry, modifiers }) ->
-	
+
 	# Destructure the entry to just what's needed
 	{ boundingClientRect: target, rootBounds: root } = entry
 
