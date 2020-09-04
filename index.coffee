@@ -57,29 +57,20 @@ makeObserver = (el, { value = {}, modifiers }) ->
 update = ({ el, entry, modifiers }) ->
 
 	# Destructure the entry to just what's needed
-	{ boundingClientRect: target, rootBounds: root } = entry
+	{
+		boundingClientRect: target
+		rootBounds: root
+		isIntersecting: inViewport
+	} = entry
 
-	# Init vars
-	add = [] # Classes to add
-	remove = [] # Classes to remove
-
-	# Util to DRY up population of add and remove arrays
-	toggle = (bool, klass) -> if bool then add.push klass else remove.push klass
-
-	# Determine viewport status, see vue-in-viewport-mixin for more info:
-	# https://github.com/BKWLD/vue-in-viewport-mixin/blob/master/index.coffee
-	inViewport = target.top <= root.bottom and target.bottom > root.top
-	above = target.top < root.top
-	below = target.bottom > root.bottom + 1
-
-	# Determine which classes to add
-	toggle inViewport, 'in-viewport'
-	toggle above, 'above-viewport'
-	toggle below, 'below-viewport'
+	# If rootBounds was null (sometimes happens in an iframe), make it from the
+	# window
+	root = { top: 0, bottom: window.innerHeight } unless root
 
 	# Apply classes to element
-	el.classList.add.apply el.classList, add if add.length
-	el.classList.remove.apply el.classList, remove if remove.length
+	el.classList.toggle 'in-viewport', inViewport
+	el.classList.toggle 'above-viewport', target.top < root.top
+	el.classList.toggle 'below-viewport', target.bottom > root.bottom + 1
 
 	# If set to update "once", remove listeners if in viewport
 	removeObserver el if modifiers.once and inViewport

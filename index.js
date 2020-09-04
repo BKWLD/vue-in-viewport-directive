@@ -130,41 +130,24 @@ update = function update(_ref2) {
   var el = _ref2.el,
       entry = _ref2.entry,
       modifiers = _ref2.modifiers;
-  var above, add, below, inViewport, remove, root, target, toggle;
+  var inViewport, root, target;
   target = entry.boundingClientRect;
   root = entry.rootBounds;
-  // Init vars
-  add = []; // Classes to add
+  inViewport = entry.isIntersecting;
 
-  remove = []; // Classes to remove
-  // Util to DRY up population of add and remove arrays
-
-  toggle = function toggle(bool, klass) {
-    if (bool) {
-      return add.push(klass);
-    } else {
-      return remove.push(klass);
-    }
-  }; // Determine viewport status, see vue-in-viewport-mixin for more info:
-  // https://github.com/BKWLD/vue-in-viewport-mixin/blob/master/index.coffee
+  if (!root) {
+    // If rootBounds was null (sometimes happens in an iframe), make it from the
+    // window
+    root = {
+      top: 0,
+      bottom: window.innerHeight
+    };
+  } // Apply classes to element
 
 
-  inViewport = target.top <= root.bottom && target.bottom > root.top;
-  above = target.top < root.top;
-  below = target.bottom > root.bottom + 1; // Determine which classes to add
-
-  toggle(inViewport, 'in-viewport');
-  toggle(above, 'above-viewport');
-  toggle(below, 'below-viewport');
-
-  if (add.length) {
-    // Apply classes to element
-    el.classList.add.apply(el.classList, add);
-  }
-
-  if (remove.length) {
-    el.classList.remove.apply(el.classList, remove);
-  }
+  el.classList.toggle('in-viewport', inViewport);
+  el.classList.toggle('above-viewport', target.top < root.top);
+  el.classList.toggle('below-viewport', target.bottom > root.bottom + 1);
 
   if (modifiers.once && inViewport) {
     // If set to update "once", remove listeners if in viewport
