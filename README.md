@@ -7,7 +7,7 @@ Vue 2 directive that sets CSS classes on its host element based on the elements 
 - `below-viewport` - Some part of the element is below the viewport
 
 
-You may want to check out the mixin vesion of this package: [vue-in-viewport-mixin](https://github.com/BKWLD/vue-in-viewport-mixin).
+You may want to check out the mixin version of this package: [vue-in-viewport-mixin](https://github.com/BKWLD/vue-in-viewport-mixin).
 
 Demo: https://bkwld.github.io/vue-in-viewport-directive
 
@@ -73,7 +73,7 @@ only once the page transition finishes.
 
 - Set the value to a string in the style of [IntersectionObserver rootMargin](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/IntersectionObserver#Parameters) to apply an offset to when the in viewport classes get added.
 	```html
-	<div v-in-viewport='-100px 0px'></div>
+	<div v-in-viewport="'-100px 0px'"></div>
 	```
 
 - Or, set it via an option:
